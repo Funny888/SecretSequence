@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -45,6 +46,17 @@ dependencies {
 
 
     implementation(libs.androidx.activity.compose)
+    // ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    // ViewModel utilities for Compose
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    // Lifecycle utilities for Compose
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    // Saved state module for ViewModel
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
+
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,12 +1,15 @@
 package com.funny.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.funny.gamescreen.GameScreen
 import com.funny.main.data.ScreenMainEvent
 import com.funny.main.presentation.screen.MainScreen
+import com.funny.navigation.di.DaggerNavigationViewModelComponent
+import com.funny.navigation.ext.injectViewModel
 import com.funny.settings.screen.SettingsScreen
 import com.funny.splash.screen.SplashScreen
 import kotlinx.serialization.Serializable
@@ -29,6 +32,9 @@ sealed class Destination {
 @Composable
 fun SecretSequenceNavigation() {
     val navController = rememberNavController()
+    val dagger = DaggerNavigationViewModelComponent.create()
+    val viewModelGame = injectViewModel { dagger.getGameScreenViewModel() }
+
     NavHost(navController = navController, startDestination = Destination.Splash) {
         composable<Destination.Splash> {
             SplashScreen {
@@ -41,7 +47,8 @@ fun SecretSequenceNavigation() {
             })
         }
         composable<Destination.Game> {
-            GameScreen()
+
+            GameScreen(state = viewModelGame.state.collectAsState().value)
         }
         composable<Destination.Settings> {
             SettingsScreen()

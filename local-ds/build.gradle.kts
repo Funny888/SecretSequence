@@ -9,6 +9,7 @@ android {
 }
 
 dependencies {
+  api(project(":utils"))
   api(libs.androidx.foundation)
   api(libs.compose.material)
   api(libs.compose.ui)

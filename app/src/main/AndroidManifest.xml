@@ -2,6 +2,7 @@
 
     <uses-sdk android:minSdkVersion="29"/>
     <application
+        android:name=".application.SecretSequenceApplication"
         android:icon="@drawable/icon_secret_sequence"
         android:label="@string/app_name">
 
