@@ -1,7 +1,6 @@
 package com.funny.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -47,8 +46,7 @@ fun SecretSequenceNavigation() {
             })
         }
         composable<Destination.Game> {
-
-            GameScreen(state = viewModelGame.state.collectAsState().value)
+            GameScreen(viewModel = viewModelGame)
         }
         composable<Destination.Settings> {
             SettingsScreen()

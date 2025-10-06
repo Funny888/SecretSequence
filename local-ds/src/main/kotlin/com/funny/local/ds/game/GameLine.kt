@@ -13,55 +13,57 @@ import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.funny.utils.Coordinate
-import kotlin.random.Random
+
+private const val SIZE_LINE = 10
+private val SIZE_CELL = 40.dp
 
 @Composable
 fun GameLine(
-    isRandom: Boolean = false,
     stateItemsStone: List<Triple<Boolean, Coordinate, GameStoneVariant>> = emptyList()
 ) {
     var coordinate by remember { mutableStateOf(Coordinate(0.dp, 0.dp)) }
     Row(
         modifier =
             Modifier
-                .padding(vertical = 40.dp)
+                .padding(vertical = SIZE_CELL)
                 .onGloballyPositioned { position ->
                     coordinate = Coordinate(
                         coordinateX = position.positionInRoot().x.dp,
                         coordinateY = position.positionInRoot().y.dp
                     )
                 }) {
-        var xOffset = coordinate.coordinateX
-        repeat(10) {
-            val result = Random.nextInt(2)
-            val idImage = if (result == 0) GameStoneVariant.WHITE else GameStoneVariant.BLACK
-            GameItem(
-                stone = if (isRandom) {
-                    idImage
-                } else {
-                    if (stateItemsStone.isNullOrEmpty().not()
-                        && stateItemsStone.size == 10
-                        && stateItemsStone[it].first
-                    ) {
-                        stateItemsStone[it].third
-                    } else {
-                        GameStoneVariant.NONE
-                    }
-                },
-                coordinate = if (it != 0) {
-                    xOffset += 40.dp
-                    coordinate.copy(coordinateX = xOffset)
-                } else {
-                    coordinate
-                }
+        if (stateItemsStone.isEmpty().not()
+            && stateItemsStone.size == SIZE_LINE
+        ) {
+            buildLine(
+                stateItemsStone = stateItemsStone,
+                coordinate = coordinate,
             )
-
         }
+    }
+}
+
+@Composable
+private fun buildLine(
+    stateItemsStone: List<Triple<Boolean, Coordinate, GameStoneVariant>> = emptyList(),
+    coordinate: Coordinate,
+) {
+    var xOffset = coordinate.coordinateX
+    repeat(stateItemsStone.size) {
+        GameItem(
+            stone = stateItemsStone[it].third,
+            coordinate = if (it != 0) {
+                xOffset += SIZE_CELL
+                coordinate.copy(coordinateX = xOffset)
+            } else {
+                coordinate
+            }
+        )
     }
 }
 
 @Preview
 @Composable
 private fun Preview() {
-    GameLine(true)
+    GameLine(listOf())
 }
